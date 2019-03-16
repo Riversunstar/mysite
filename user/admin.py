@@ -18,7 +18,7 @@ class ProfileInline(admin.StackedInline):
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline, )
-    list_display = ('username', 'nickname', 'email', 'is_staff', 'is_active', 'is_superuser')
+    list_display = ('id', 'username', 'nickname', 'email', 'is_staff', 'is_active', 'is_superuser')
 
     def nickname(self, obj):
         return obj.profile.nickname
