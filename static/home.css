@@ -16,3 +16,15 @@ div.hot_data{
     text-align: center;
     margin-top: 2em;
 }
+
+div.footer{
+    background-color: #eee;
+    margin-top: 3em;
+    color: #555;
+}
+
+div.website-info{
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 1.5em;
+}
