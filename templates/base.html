@@ -27,6 +27,7 @@
                 <ul class="nav navbar-nav">
                     <li class="{% block nav_home_active %}{% endblock %}" ><a href="{%  url 'home' %}">首页</a></li>
                     <li class="{% block nav_blog_active %}{% endblock %}" ><a href="{% url 'blog_list' %}">博客</a></li>
+                    <li class="{% block nav_todo_active %}{% endblock %}" ><a href="{% url 'todo' %}">TodoList</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if not user.is_authenticated %}

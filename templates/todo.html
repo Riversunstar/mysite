@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+我的网站 | TodoList
+{% endblock %}
+
+{% block header_extends %}
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+{% endblock %}
+
+{% block nav_todo_active %}active{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col-xs-10 col-xs-offset-1">
+			<div id='todo'>
+				<h3>待办事项</h3>
+				<input v-model="message" v-on:keyup.enter="addNewTodo(message)" placeholder="写下你的事项, 按回车添加">
+				<div id="todolist" v-if="todolist.length">		
+					<div id="unCompleteTodo" v-if="">
+						<p>未完成事项:</p>
+						<ul>
+							<li
+								v-for="(todo, index) in todolist" 
+								v-bind:key="todo.id" 
+								v-if='!todo.isComplete'>
+								{% verbatim %}{{ todo.text }}{% endverbatim %}
+								<button v-on:click="completeTodo(todo)">完成</button>
+								<button v-on:click="deleteTodo(index)">删除</button>
+							</li>
+						</ul>	
+					</div>
+					<div id="completedTodo" v-if="completedTodo.length" >
+						<p>已完成事项:</p>
+						<button v-on:click="hideCompletedTodos">{% verbatim %}{{ hideText }}{% endverbatim %}</button>
+						<div v-if="hideTodos">
+							<ul>
+								<li
+									v-for="(todo, index) in todolist" 
+									v-bind:key="todo.id" 
+									v-if='todo.isComplete'>
+									{% verbatim %}{{ todo.text }}{% endverbatim %}
+									<button v-on:click="completeTodo(todo)">撤销</button>
+									<button v-on:click="deleteTodo(index)">删除</button>			
+								</li>
+							</ul>					
+						</div>
+					</div>
+					<button v-on:click="cleanTodo">清空列表</button>
+					<div id="TodoListStatistics">
+						<p>未完成:{{ unCompleteTodo.length }}</p>
+						<p>已完成:{{ completedTodo.length }}</p>
+						<p>总事项:{{ todolist.length }}</p>
+					</div>
+				</div>
+				<div v-else>
+					<p>说点什么吧</p>
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script_extends %}
+	<script type="text/javascript">
+		new Vue({
+			el: "#todo",
+			data:{
+				message: '',
+				todolist: [],
+				isComplete: false,
+				hideTodos: true,
+				hideText: '隐藏事项'
+			},
+			computed:{
+				completedTodo: function(){
+					return this.todolist.filter(function(todo){
+						if (todo.isComplete) {
+							return todo
+						} 
+					})
+				},
+
+				unCompleteTodo: function(){
+					return this.todolist.filter(function(todo){
+						if (!todo.isComplete) {
+							return todo
+						} 
+					})
+				},
+			},
+			methods:{
+				addNewTodo(message){
+					if (message) {
+						this.todolist.push({
+							id: this.todolist.length , 
+							text:message, 
+							isComplete: false})		
+					}
+				},
+
+				deleteTodo(index){
+					this.todolist.splice(index, 1)
+				},
+
+				cleanTodo(){
+					this.todolist = []
+				},
+
+				completeTodo(todo){
+					if (todo.isComplete) {
+						todo.isComplete = false
+					} else {
+						todo.isComplete = true
+					}
+				},
+
+				hideCompletedTodos(){
+					if (this.hideTodos) {
+						this.hideTodos = false
+						this.hideText = '显示事项'
+
+					} else {
+						this.hideTodos = true
+						this.hideText = '隐藏事项'
+					}
+				},
+			}
+		})
+	</script>
+{% endblock %}

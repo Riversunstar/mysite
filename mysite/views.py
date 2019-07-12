@@ -22,6 +22,9 @@ def home(request):
     context['today_hot_blogs'] = get_today_hot_blogs()
     context['yesterday_hot_blogs'] = get_yesterday_hot_blogs()
     context['seven_day_hot_blogs'] = seven_day_hot_blogs
-    return render(request,'home.html', context)
+    return render(request, 'home.html', context)
 
+def todo(request):
+    context = {}
+    return render(request, 'todo.html', context)
 
